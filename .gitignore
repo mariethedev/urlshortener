@@ -150,6 +150,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+.gitattributes
 
 # mypy
 .mypy_cache/
@@ -173,3 +174,4 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
+
