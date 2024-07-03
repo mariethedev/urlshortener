@@ -1,129 +1,283 @@
+
+<html lang="en">
 <head>
-    <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+
     <style>
-        *,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #F8F9FA;
+            font-family: Montserrat, sans-serif;
+        }
 
-body,
-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
+        .container {
+            width: 756px;
+            height: 467px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFF9FB;
+            box-shadow: 0px 4px 70px rgba(0, 0, 0, 0.25);
+            border: 0.3px solid;
+        }
 
-body {
-  min-height: 100vh;
-  font-family: "Lato", sans-serif;
-  line-height: 1.5;
-  color: #111;
-}
+        .input-container-2 {
+            width: 667px;
+            height: 70px;
+            position: absolute;
+            top: 278px;
+            left: 44px;
+            background: #FFF7EA;
+            border-radius: 32px;
+            border: 0.5px solid black;
+        }
 
-main {
-  max-width: 720px;
-  width: 100%;
-  border: 2.5px solid #330867;
-  border-radius: 2.5px;
-  box-shadow: 0 10px 20px rgba(17, 17, 17, 0.125),
-    0 5px 5px rgba(17, 17, 17, 0.25);
-  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
-}
+        .input-container-1 {
+            position: relative;
+            width: 533px;
+            height: 70px;
+            top: 150px;
+            left: 46px;
+        }
+        
+        .input-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #FFF7EA;
+            border-radius: 32px;
+            border: 0.5px solid black;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .input-text{
+            width:calc(100% - 48px);
+            position: absolute;
+            top: 22px; /* Adjusted to center vertically */
+            left: 24px; /* Adjusted to match padding */
+            color: #212732;
+            font-size: 21px;
+            font-family: Montserrat, sans-serif;
+            font-weight: 10;
+            margin: 0;
+            word-wrap: break-word;
+            border: none;
+            background: none;
+            outline: none;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+       
 
-h1 {
-  padding: 1rem;
-  color: white;
-}
+        .copy-button {
+            width: 48px;
+            height: 31px;
+            position: absolute;
+            top: 297px;
+            left: 651px;
+            transform-origin: 0 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
 
-input,
-button {
-  font-family: inherit;
-  line-height: inherit;
-  color: inherit;
-  border: 0;
-  padding: 1rem;
-}
+        .copy-button img {
+            width: 100%;
+            height: 100%;
+        }
 
-input {
-  box-sizing: border-box;
-  width: 100%;
-}
+        .copy-button:hover {
+            opacity: 0.7; /* Example: Reducing opacity on hover */
+        }
 
-.buttons {
-  display: flex;
-}
+        .title {
+            width: 328px;
+            height: 52px;
+            position: absolute;
+            top: 54px;
+            left: 55px;
+            color: #342C2D;
+            font-size: 38px;
+            font-family: Roboto, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.14px;
+            word-wrap: break-word;
+        }
 
-button {
-  cursor: pointer;
-  flex: 1;
-  background-color: transparent;
-  color: white;
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-}
+        .terms {
+            position: absolute;
+            top: 392px;
+            left: 72px;
+            text-align: center;
+            color: #342C2D;
+            font-size: 16px;
+            font-weight: 300;
+            word-wrap: break-word;
+        }
 
-section {
-  min-height: 120px;
-  text-align: center;
-  background-color: white;
-}
+        .terms span {
+            word-wrap: break-word;
+        }
 
+        .terms .underline {
+            text-decoration: underline;
+        }
+
+        .shorten-button {
+            width: 121px;
+            height: 70px;
+            background-color: #342C2D;
+            color: white;
+            border: none;
+            border-radius: 35px;
+            font-size: 21px;
+            font-weight: 500;
+            font-family: Montserrat, sans-serif;
+            position: absolute;
+            top: 150px;
+            right: 44px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shorten-button:hover {
+            background-color: #1a1515;
+        }
+
+        h2 {
+          width:calc(100% - 48px);
+          font-family: Montserrat, sans-serif;
+          font-size: 21px;
+          position: absolute;
+          top: 22px; 
+          left: 24px;
+          color: #212732;
+          font-weight: 20; /* Adjust font weight as needed */
+          
+          margin: 0;
+          border: none;
+          background: none;
+          outline: none;
+          box-sizing: border-box;
+      }
+
+        .footer {
+            position: absolute;
+            top: 997px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: black;
+            font-size: 14px;
+            font-weight: 200;
+            word-wrap: break-word;
+        }
     </style>
-
+    {% load static %}
 </head>
 
-<main>
-  <h1>URL Shortener</h1>
-  <form id="post-form">
-    {% csrf_token %}
-  <input type="text" name="link" id="link" placeholder="Enter URL here">
-  <div class="buttons">
-    <button type="submit" id="shorten">Shorten</button>
-  </div>
-  </form>
-  
-  <section id="section"><h2></h2></section>
 
+<body>
+    <div class="container">
+
+        <div class="title">URLShortener</div>
+
+        <div class="input-container-1">
+            <div class="input-box">
+                <input class= "input-text" type = "text" id = 'longUrl' placeholder="Type or paste your long link (URL) here">
+            </div>
+        </div>
+
+        <form id="post-form">
+            {% csrf_token %}
+            <button class="shorten-button">Shorten</button>
+        </form>
+       
+        <div class="input-container-2"><h2></h2></div>
     
-</main>
-
-<script type="text/javascript">
-  $(document).on('submit', '#post-form', function(e){
-    e.preventDefault();              <!--Prevents page from reloading-->
-
-    $.ajax({
-      type:'POST',
-      url: '/create',
-      data:{
-        link:$('#link').val(),
-        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-      },
-      success: function(data){
-        $('h2').html("localhost:8000/" + data)
-      }
-    })
-  })
-</script>
+        <button id= "copyButton" class= "copy-button" > 
+            <img src= "{% static 'images/Copy.png' %}" alt="copy button"> 
+        </button>
 
 
-<!--<script type="text/javascript">
-  $(document).on('submit','#post-form',function(e){
-    e.preventDefault();
+        <div class="terms">
+            <span>By clicking on Shorten, you agree to URL Shortner's </span>
+            <span class="underline">Terms of Use</span>
+            <span>, </span>
+            <span class="underline">Privacy Policy</span>
+            <span>,<br>and</span>
+            <span class="underline">Cookie Policy.</span>
+        </div>
 
-    $.ajax({
-      type:'POST',
-      url:'/create',
-      data:{
-        link:$('#link').val(),
-        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-      },
-      success: function(data){
-        $('h2').html("www.surls.ga/"+data)
-      }
-    });
-  });
-</script>
--->
+    </div>
+
+    <div class="footer">Designed by mariethedev</div>
+
+    <script type = "text/javascript">
+        $(document).ready(function(){
+            
+            $('#post-form').submit(function(e){
+                e.preventDefault();
+
+                var longUrl = $('#longUrl').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/create',
+                    data:{
+                        link: longUrl,
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function(data){
+                        var shortUrl = "localhost:8000/" + data;
+                        $('h2').html(shortUrl);
+
+
+                        var hiddenInput = $('<input>');
+                        hiddenInput.attr('type', 'text');
+                        hiddenInput.attr('id', 'shortUrl');
+                        hiddenInput.val(shortUrl);
+                        hiddenInput.css('opacity', '0');
+                        $('body').append(hiddenInput);
+                    },
+                    error: function(xhr, status, error){
+                        console.error(error);
+                    }
+                });
+            });
+
+            $('#copyButton').click(function(){
+                var shortUrlInput = $('#shortUrl');
+
+                if (shortUrlInput.length){
+                    shortUrlInput.select();
+                    document.execCommand('copy');
+                    alert('Shortened URL copied to clipboard!');   
+                } else{
+                    alert('No URL to copy!');
+                }
+            });
+        });
+
+
+    </script>
+</body>
+</html>
