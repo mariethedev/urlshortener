@@ -106,6 +106,26 @@
             opacity: 0.7; /* Example: Reducing opacity on hover */
         }
 
+        .tooltip{
+           
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.1s;
+            pointer-events: none; /* Prevent the tooltip from blocking clicks */
+            visibility: hidden; /* Initially hidden */
+            transform: translateY(-100%); /* Position above the button */
+        }
+
+        .tooltip.show {
+            opacity: 2;
+            visibility: visible;
+        }
+
         .title {
             width: 328px;
             height: 52px;
@@ -177,7 +197,7 @@
           background: none;
           outline: none;
           box-sizing: border-box;
-      }
+        }
 
         .footer {
             position: absolute;
@@ -215,7 +235,9 @@
     
         <button id= "copyButton" class= "copy-button" > 
             <img src= "{% static 'images/Copy.png' %}" alt="copy button"> 
+            <div id= "tooltip" class = "tooltip" >Copied!</div>
         </button>
+       
 
 
         <div class="terms">
@@ -232,46 +254,100 @@
     <div class="footer">Designed by mariethedev</div>
 
     <script type = "text/javascript">
+        // Runs the function when the document is fully loaded
         $(document).ready(function(){
-            
-            $('#post-form').submit(function(e){
-                e.preventDefault();
 
-                var longUrl = $('#longUrl').val();
+            // Attach a submit event handler to the form with id 'post-form'
+            $('#post-form').submit(function(e){
+
+                e.preventDefault();      // Prevents the default form submission behavior (page reload)
+
+                // Gets the value of the input field with id 'longUrl' and remove any leading/trailing whitespace
+                var longUrl = $('#longUrl').val().trim();
+
+                // Checks if the input is empty
+                if (!longUrl){
+
+                    $('h2').html("Please enter a valid URL");     // Display an error message
+
+                    return;         // Exit the function if the input is empty
+                }
+
 
                 $.ajax({
-                    type: 'POST',
-                    url: '/create',
+                    type: 'POST',  // Specifies the request type as POST
+
+                    url: '/create',     // Sets the endpoint to which the request is sent
+
+                    // Sends the data to the server
                     data:{
-                        link: longUrl,
-                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                        link: longUrl,              // The long URL entered by the user
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()         // includes an CSRF token for security
                     },
+
+                    // function to be called if the request succeeds
                     success: function(data){
-                        var shortUrl = "localhost:8000/" + data;
-                        $('h2').html(shortUrl);
+                        // Check if the server returned an error message
+                        if(data.error){
+                            $('h2').html(data.error);       // Display the error message
+                        }
+                        else{
+                            // Create the shortened URL
+                            var shortUrl = "localhost:8000/" + data;
+                            $('h2').html(shortUrl);              // Display the shortened URL
 
 
-                        var hiddenInput = $('<input>');
-                        hiddenInput.attr('type', 'text');
-                        hiddenInput.attr('id', 'shortUrl');
-                        hiddenInput.val(shortUrl);
-                        hiddenInput.css('opacity', '0');
-                        $('body').append(hiddenInput);
-                    },
+                            // Check if the hidden input with id 'shortUrl' already exists:
+                            var hiddenInput = $("#shortUrl");
+
+                            if (hiddenInput.length){
+                                hiddenInput.val(shortUrl); /// Update the existing input with the new short URL
+                            }
+                            else{
+                                // Create a new hidden input field
+                                hiddenInput = $('<input>');
+                                hiddenInput.attr('type', 'text');
+                                hiddenInput.attr('id', 'shortUrl');
+                                hiddenInput.val(shortUrl);
+                                hiddenInput.css('opacity', '0');        // Make the input invisible
+                                $('body').append(hiddenInput);   // Append the input to the body of the document
+                            }
+                            
+                        }
+                    } ,
+
+                    // Function to be called if the request fails
                     error: function(xhr, status, error){
-                        console.error(error);
+                        var errorMessage = "An error occurred. Please try again.";  // Default error message
+
+                        // Displays the server error message if there is one:
+                        if (xhr.responseJSON && xhr.responseJSON.error) {
+                            errorMessage = xhr.responseJSON.error;
+                        }
+                        $('h2').html(errorMessage);
                     }
                 });
             });
 
-            $('#copyButton').click(function(){
-                var shortUrlInput = $('#shortUrl');
+            // Attach a click event handler to the button with id 'copyButton'
+            $('#copyButton').click(function() {
+                var copyText = $('#shortUrl');
 
-                if (shortUrlInput.length){
-                    shortUrlInput.select();
+                if (copyText.length){
+                    copyText = copyText[0];
+
+                    copyText.select();
+                    copyText.setSelectionRange(0, 99999);
                     document.execCommand('copy');
-                    alert('Shortened URL copied to clipboard!');   
-                } else{
+                    
+                    var tooltip = $(this).find('.tooltip');
+                    tooltip.addClass('show');
+        
+                    setTimeout(function() {
+                        tooltip.removeClass('show');
+                    }, 1000);
+                } 
+                else {
                     alert('No URL to copy!');
                 }
             });
