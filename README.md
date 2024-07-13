@@ -1,4 +1,8 @@
-# UrlShortener
+![URL-Shortener 1 pic](https://github.com/user-attachments/assets/12d7fd01-c38d-410a-8f38-4a3ce3b0c6ff)# 
+![URL-Shortener 2](https://github.com/user-attachments/assets/a3ce744c-a07d-4486-849e-f43e91948748)
+
+
+UrlShortener
 
 A simple URL shortener application built with Django. This application allows users to input a long URL and receive a shortened version that redirects to the original URL.
 
