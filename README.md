@@ -2,6 +2,12 @@
 
 A simple URL shortener application built with Django. This application allows users to input a long URL and receive a shortened version that redirects to the original URL.
 
+##First Look
+![image](https://github.com/user-attachments/assets/31ea1f7b-c067-4ab2-9fb7-7229c75f0cc5)
+![image](https://github.com/user-attachments/assets/11fcb2ce-1a77-46a2-8f0c-0424a799b166)
+
+
+
 
 ## Table of Contents
 
